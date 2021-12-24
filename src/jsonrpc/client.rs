@@ -57,6 +57,7 @@ impl HttpClient {
 
         let request_size_limit = get_buffer_size();
         trace!("using buffer size of {}", request_size_limit);
+        trace!("response size is {:?}", res.content_length());
 
         let response_content_length = match res.content_length() {
             Some(v) => v as usize,
