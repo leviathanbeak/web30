@@ -59,15 +59,15 @@ impl HttpClient {
         trace!("using buffer size of {}", request_size_limit);
         trace!("response size is {:?}", res.content_length());
 
-        let response_content_length = match res.content_length() {
-            Some(v) => v as usize,
-            None => request_size_limit + 1, // Just to protect ourselves from a malicious response
+        let (response_content_length, origi) = match res.content_length() {
+            Some(v) => (v as usize, v as usize),
+            None => (request_size_limit + 1, 0), // Just to protect ourselves from a malicious response
         };
 
         if response_content_length > request_size_limit {
             return Err(Web3Error::BadResponse(format!(
-                "Size Limit {} Web3 Error",
-                request_size_limit
+                "Size Limit is {}, response content size is {}, origi is {} Web3 Error",
+                request_size_limit, response_content_length, origi
             )));
         }
 
