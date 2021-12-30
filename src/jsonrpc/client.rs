@@ -53,11 +53,11 @@ impl HttpClient {
             .send()
             .await?;
 
-        trace!("response headers {:?}", res.headers());
+        info!("response headers {:?}", res.headers());
 
         let request_size_limit = get_buffer_size();
-        trace!("using buffer size of {}", request_size_limit);
-        trace!("response size is {:?}", res.content_length());
+        info!("using buffer size of {}", request_size_limit);
+        info!("response size is {:?}", res.content_length());
 
         let (response_content_length, origi) = match res.content_length() {
             Some(v) => (v as usize, v as usize),
